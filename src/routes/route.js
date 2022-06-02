@@ -1,41 +1,58 @@
-const express = require('express');
-const myHelper = require('../util/helper')
-const underscore = require('underscore')
+const express = require("express");
+
+const {filmes} = require('../filme/filmes')
 
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-    myHelper.printDate()
-    myHelper.getCurrentMonth()
-    myHelper.getCohortData()
-    let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
-    console.log('The first element received from underscope function is '+firstElement)
-    res.send('My first ever api!')
+
+// Movie API 
+router.get("/movies", (req, res) => {
+  const movies = [
+    "The Shawshank Redemption ",
+    "The Godfather",
+    " The Dark Knight",
+    " The Godfather: Part II",
+    " 12 Angry Men ",
+    " Schindler's List ",
+    "The Lord of the Rings: The Return of the King",
+    " Pulp Fiction",
+  ];
+  res.send(movies);
 });
 
-router.get('/hello', function (req, res) {
-   
-    res.send('Hello there!')
+// single Movie API 
+router.get("/movies/:indexNumber", (req, res) => {
+  const movies = [
+    "The Shawshank Redemption ",
+    "The Godfather",
+    " The Dark Knight",
+    " The Godfather: Part II",
+    " 12 Angry Men ",
+    " Schindler's List ",
+    "The Lord of the Rings: The Return of the King",
+    " Pulp Fiction",
+  ];
+
+  if ( 0 > req.params.indexNumber ||  movies.length <= req.params.indexNumber) {
+    res.send("Please Enter vailde Index number ");
+  } else {
+    res.send(movies[req.params.indexNumber]);
+  }
 });
 
-router.get('/candidates', function(req, res){
-    console.log('Query paramters for this request are '+JSON.stringify(req.query))
-    let gender = req.query.gender
-    let state = req.query.state
-    let district = req.query.district
-    console.log('State is '+state)
-    console.log('Gender is '+gender)
-    console.log('District is '+district)
-    let candidates = ['Akash','Suman']
-    res.send(candidates)
+// filmes API
+router.get('/films',(req,res)=>{
+res.send(filmes)
 })
 
-router.get('/candidates/:canidatesName', function(req, res){
-    console.log('The request objects is '+ JSON.stringify(req.params))
-    console.log('Candidates name is '+req.params.canidatesName)
-    res.send('Done')
+// single filems API
+router.get('/films/:filmId',(req,res)=>{
+  if ( 0 >= req.params.filmId ||  filmes.length < req.params.filmId) {
+    res.send("No movie exists with this id");
+  } else {
+    const filmeData = filmes.find(ele => ele.id === +req.params.filmId)
+    res.send(filmeData);
+  }
 })
-
-
 module.exports = router;
 // adding this comment for no reason
