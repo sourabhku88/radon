@@ -1,5 +1,7 @@
 const express = require('express');
-const { createBook, bookList, getBooksInYear, getParticularBooks, getXINRBooks, getRandomBooks } = require('../controllers/BooksController');
+const { createauthor } = require('../controllers/authorController');
+const { createBooks, findBookByCost, findByNameAndsendBook, findAuthor } = require('../controllers/BooksController');
+// const { createBook, bookList, getBooksInYear, getParticularBooks, getXINRBooks, getRandomBooks } = require('../controllers/BooksController');
 const router = express.Router();
 // const UserModel= require("../models/userModel.js")
 // const UserController= require("../controllers/userController")
@@ -17,12 +19,19 @@ router.get("/test-me", function (req, res) {
 
 // router.get("/getBooksData", BookController.getBooksData)
 
-router.post('/createbook',createBook);
-router.post('/getBooksInYear',getBooksInYear)
-router.post('/getParticularBooks',getParticularBooks)
-router.get('/bookList',bookList)
-router.get('/getXINRBooks',getXINRBooks)
-router.get('/getRandomBooks',getRandomBooks)
+// router.post('/createbook',createBook);
+// router.post('/getBooksInYear',getBooksInYear)
+// router.post('/getParticularBooks',getParticularBooks)
+// router.get('/bookList',bookList)
+// router.get('/getXINRBooks',getXINRBooks)
+// router.get('/getRandomBooks',getRandomBooks)
+
+
+router.post('/createauthor' , createauthor)
+
+router.get('/findByNameAndsendBook' , findByNameAndsendBook)
+router.get('/findAuthor' , findAuthor)
+router.get('/findBookByCost' , findBookByCost)
 
 
 module.exports = router;
