@@ -28,6 +28,7 @@ router.get("/test-me", function (req, res) {
 
 
 router.post('/createauthor' , createauthor)
+router.post('/createbook' , createBooks)
 
 router.get('/findByNameAndsendBook' , findByNameAndsendBook)
 router.get('/findAuthor' , findAuthor)
