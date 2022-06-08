@@ -1,6 +1,6 @@
 const express = require('express');
 const { createauthor } = require('../controllers/authorController');
-const { createBooks, findBookByCost, findByNameAndsendBook, findAuthor } = require('../controllers/BooksController');
+const { createBooks, findBookByCost, findByNameAndsendBook, findAuthor, byAutherId, ageAuthor } = require('../controllers/BooksController');
 // const { createBook, bookList, getBooksInYear, getParticularBooks, getXINRBooks, getRandomBooks } = require('../controllers/BooksController');
 const router = express.Router();
 // const UserModel= require("../models/userModel.js")
@@ -33,6 +33,10 @@ router.post('/createbook' , createBooks)
 router.get('/findByNameAndsendBook' , findByNameAndsendBook)
 router.get('/findAuthor' , findAuthor)
 router.get('/findBookByCost' , findBookByCost)
+
+// update assignmmen -------
+router.get('/books-by-authorid/:Author_Id', byAutherId);
+router.get('/reatingbookby50yold',ageAuthor)
 
 
 module.exports = router;

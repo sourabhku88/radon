@@ -1,6 +1,6 @@
 // const BooksSchema = require("../models/bookModels");
-const authorModal = require('../models/authorModal');
-const booksDay3 = require('../models/bookModal3')
+const authorModal = require("../models/authorModal");
+const booksDay3 = require("../models/bookModal3");
 // const createBook = async (req, res) => {
 //   const data = await BooksSchema.create(req.body);
 //   res.send(data);
@@ -42,39 +42,82 @@ const booksDay3 = require('../models/bookModal3')
 //   getXINRBooks,
 //   getRandomBooks,
 // };
-// no hendle edge case 
-
+// no hendle edge case
 
 // create Books
-const createBooks = async(req,res) =>{
-  if(!req.body.author_id){
-    res.send({msg:"please enter auther id"})
-  }else{
+const createBooks = async (req, res) => {
+  if (!req.body.author_id) {
+    res.send({ msg: "please enter auther id" });
+  } else {
     const data = await booksDay3.create(req.body);
-    res.send({msg:data})
+    res.send({ msg: data });
   }
-}
+};
 
 // create Author
-const findByNameAndsendBook = async (req,res)=>{
-  const author = await authorModal.findOne({author_name:"Chetan Bhagat"});
+const findByNameAndsendBook = async (req, res) => {
+  const author = await authorModal.findOne({ author_name: "Chetan Bhagat" });
   const id = author.author_id;
-  const books = await booksDay3.find({author_id:id})
-  res.send({msg:books});
-}
+  const books = await booksDay3.find({ author_id: id });
+  res.send({ msg: books });
+};
 
 // finde auhtor
-const findAuthor = async (req,res)=>{
- const book = await booksDay3.findOneAndUpdate({name:"Two states"} , {price :100} ,{new:true});
- const author = await authorModal.find({author_id:book.author_id}).select({author_name:1,_id:0});
- res.send({UpdateBook : book , authorName : author})
-}
- 
-// findeBookByCost
-const findBookByCost = async (req,res) => {
-  const bookAuthorName = await booksDay3.find({price : { $gte: 50, $lte: 100}});
-  const autherName = await authorModal.find({author_id:bookAuthorName[0].author_id})
-  res.send({bookName: bookAuthorName , auhtorName: autherName})
-}
+const findAuthor = async (req, res) => {
+  const book = await booksDay3.findOneAndUpdate(
+    { name: "Two states" },
+    { price: 100 },
+    { new: true }
+  );
+  const author = await authorModal
+    .find({ author_id: book.author_id })
+    .select({ author_name: 1, _id: 0 });
+  res.send({ UpdateBook: book, authorName: author });
+};
 
-module.exports = {createBooks,findByNameAndsendBook,findBookByCost ,findAuthor}
+// findeBookByCost
+const findBookByCost = async (req, res) => {
+  const bookAuthorName = await booksDay3.find({
+    price: { $gte: 50, $lte: 100 },
+  });
+  const autherName = await authorModal.find({
+    author_id: bookAuthorName[0].author_id,
+  });
+  res.send({ bookName: bookAuthorName, auhtorName: autherName });
+};
+
+// update assignmment ----------------------
+
+// findeBookByAuthorId
+
+const byAutherId = async (req, res) => {
+  const Author_Id = req.params.Author_Id;
+  const bookName = await booksDay3
+    .find({ author_id: Author_Id })
+    .select({ name: 1, _id: 0 });
+  res.send(bookName);
+};
+
+const ageAuthor = async (req, res) => {
+  const isOlder50yAuthor = await authorModal.find({age:{$gte : 50} }); // 2 array
+  const book =await booksDay3.find(); // 4 array
+  const authorName = []
+    isOlder50yAuthor.forEach(ele =>{
+      book.forEach(item =>{
+        if( item.author_id === ele.author_id && item.ratings > 4 ){
+          authorName.push({author_age: ele.age ,author_name: ele.author_name})
+        }
+      })
+    })
+  res.send(authorName)
+};
+
+module.exports = {
+  createBooks,
+  findByNameAndsendBook,
+  findBookByCost,
+  findAuthor,
+  byAutherId,
+  ageAuthor,
+};
+
