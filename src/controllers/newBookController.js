@@ -5,17 +5,17 @@ const newPublisher = require('../models/newPublisher');
 
 // CREATE BOOK HENDLER
 const createBook = async (req,res) =>{
-    const {author , publisher} = req.body;
+   const {author , publisher} = req.body;
     if(!author || !publisher){
       return  res.send({msg:" author and publisher both are required"})
     }else{
-        const authorId = await newAuthor.findById(author);
+        const authorId = await newAuthor.findById(author); 
         const publisherId = await newPublisher.findById(publisher);
-        if(!authorId && !publisherId){
-            return  res.send({msg:" author and publisher "})
+        if(!authorId || !publisherId){
+            return  res.send({msg:" authorID and publisherID is not valid "})
         }else{
            const data = await newBook.create(req.body);
-           res.send({msg:data, status:true})
+           res.send({ status:true})
         }
     }
 }

@@ -14,7 +14,7 @@ router.post('/create-publisher',createPublisher)
 
 
 //  BOOK
-router.post('/crete-book',createBook)
+router.post('/create-book',createBook)
 router.get('/get-all-book',getAllBook)
 
 
