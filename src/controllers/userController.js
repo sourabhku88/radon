@@ -41,22 +41,14 @@ const loginUser = async function (req, res) {
 };
 
 const getUserData = async function (req, res) {
-  let token = req.headers["x-Auth-token"];
-  if (!token) token = req.headers["x-auth-token"];
 
-  //If no token is present in the request header return error
-  if (!token) return res.send({ status: false, msg: "token must be present" });
-
-  console.log(token);
   
   // If a token is present then decode the token with verify function
   // verify takes two inputs:
   // Input 1 is the token to be decoded
   // Input 2 is the same secret with which the token was generated
   // Check the value of the decoded token yourself
-  let decodedToken = jwt.verify(token, "functionup-thorium");
-  if (!decodedToken)
-    return res.send({ status: false, msg: "token is invalid" });
+
 
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
@@ -83,6 +75,8 @@ const updateUser = async function (req, res) {
   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
   res.send({ status: updatedUser, data: updatedUser });
 };
+
+
 
 const postMessage = async function (req, res) {
     let message = req.body.message
@@ -115,8 +109,17 @@ const postMessage = async function (req, res) {
     return res.send({status: true, data: updatedUser})
 }
 
+
+const deleteUser = async (req,res)=>{
+  let userId = req.params.userId;
+
+  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, {$set:{isDeleted:true }} , {new:true });
+  res.send({ status: updatedUser, msg: "Deleted user" });
+}
+
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
 module.exports.postMessage = postMessage
+module.exports.deleteUser = deleteUser
